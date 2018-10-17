@@ -21,7 +21,7 @@ mkdir Logs
 # CreateHash
 echo $(date) Creating the hash function with k-mers of length $kmerLen and hash size 2^$hashSize
 mkdir hashed_reads
-python LSA/create_hash.py -i original_reads/ -o hashed_reads/ -k 33 -s $hashSize > Logs/CreateHash.log 2>&1
+python LSA/create_hash.py -i original_reads/ -o hashed_reads/ -k $kmerLen -s $hashSize > Logs/CreateHash.log 2>&1
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/CreateHash.log; exit 1; fi
 
 # HashReads
