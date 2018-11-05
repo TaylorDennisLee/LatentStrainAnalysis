@@ -1,4 +1,4 @@
-from random import randint
+import random
 import glob,os
 import numpy as np
 from LSA import LSA
@@ -7,6 +7,7 @@ from hash_counting import Hash_Counting
 from cluster_analysis import Cluster_Analysis
 
 class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
+    random.seed(9999)
 
     def __init__(self,indir,outdir,hash_size=999,new_hash=(None,None)):
         super(Fastq_Reader,self).__init__(indir,outdir)
@@ -132,7 +133,6 @@ class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
     def rand_kmers_for_wheel(self,total_kmers):
         RP = glob.glob(os.path.join(self.input_path,'*.fastq.*'))
         if len(RP) > 100:
-            import random
             RP = random.sample(RP,100)
         elif len(RP) == 0:
             # single file per sample
@@ -161,7 +161,7 @@ class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
 
     def rand_kmer(self,f,max_seek=10**8):
         while True:
-            f.seek(randint(0,max_seek))
+            f.seek(random.randint(0,max_seek))
             # ultra slow - partly due to setting qual scores every time
             rs = [_ for _ in self.read_generator(f,max_reads=1,verbose_ids=True)]
             if len(rs) > 0:
@@ -171,6 +171,6 @@ class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
                 max_seek /= 10
             if max_seek == 0:
                 raise Exception
-        ri = min(20,randint(0,len(rs[0]['s'])-self.kmer_size))
+        ri = min(20,random.randint(0,len(rs[0]['s'])-self.kmer_size))
         rs = rs[0]['_id'].split('\n')
-        return '\n'.join([rs[0],rs[1][ri:ri+self.kmer_size],rs[2],rs[3][ri:ri+self.kmer_size]+'\n']) 
+        return '\n'.join([rs[0],rs[1][ri:ri+self.kmer_size],rs[2],rs[3][ri:ri+self.kmer_size]+'\n'])
