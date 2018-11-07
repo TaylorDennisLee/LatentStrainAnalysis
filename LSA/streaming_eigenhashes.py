@@ -10,6 +10,7 @@ from hyper_sequences import Hyper_Sequences
 from hash_counting import Hash_Counting
 
 class StreamingEigenhashes(Hash_Counting,Hyper_Sequences,LSA):
+    np.random.seed(9999)
 
     def __init__(self,inpath,outpath,get_pool=8):
         super(StreamingEigenhashes,self).__init__(inpath,outpath)
