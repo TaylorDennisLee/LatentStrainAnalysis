@@ -43,12 +43,12 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hr:i:o:z',["filerank=","inputdir=","outputdir="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     do_reverse_compliment = True
     for opt, arg in opts:
         if opt in ('-h','--help'):
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt in ('-r','--filerank'):
             fr = int(arg) - 1
@@ -81,9 +81,9 @@ if __name__ == "__main__":
             A,B = hashobject.generator_to_bins(hashobject.read_generator(f,max_reads=25000,verbose_ids=True),rc=do_reverse_compliment)
             for b in range(len(B)):
                 reads_hashed += kmer_bins(B[b],A,hashobject.hpfx,g,read_type)
-        except Exception,err:
+        except Exception as err:
             pass
             #print str(err)
     f.close()
     g.close()
-    print 'total reads hashed:',reads_hashed
+    print('total reads hashed:',reads_hashed)

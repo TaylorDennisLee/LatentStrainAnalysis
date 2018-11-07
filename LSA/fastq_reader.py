@@ -51,14 +51,14 @@ class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
         read_strings = []
         r = 0
         while (line != '') and (r < max_reads):
-            # read_id (always) and quality (sometimes) begin with '@', but quality preceded by '+' 
+            # read_id (always) and quality (sometimes) begin with '@', but quality preceded by '+'
             if (line[0] == '@') and (lastlinechar != '+'):
                 if len(read_strings) == 5:
                     try:
                         I = newline.join(read_strings[:-1])
                         B = np.fromstring(read_strings[-1][10:-2],dtype=np.uint64,sep=',')
                         yield (I,B[0],B[1:])
-                    except Exception,err:
+                    except Exception as err:
                         print str(err)
                     r += 1
                 read_strings = []
@@ -148,7 +148,7 @@ class Fastq_Reader(Cluster_Analysis,Hash_Counting,Hyper_Sequences,LSA):
                 try:
                     g.write(self.rand_kmer(f))
                     kf += 1
-                except Exception,err:
+                except Exception as err:
                     fails += 1
                     print str(err)
                     if fails > 100:

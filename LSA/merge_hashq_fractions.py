@@ -10,7 +10,7 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hr:i:o:',["filerank=","inputdir=","outputdir="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-r','--filerank'):
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     H = np.array(H,dtype=np.uint16)
     nz = np.nonzero(H)[0]
     np.save(hashobject.output_path+file_prefix+'.nonzero.npy',nz)
-    print 'sample %s has %d nonzero elements and %d total observed kmers' % (file_prefix,len(nz),H.sum())
+    print('sample %s has %d nonzero elements and %d total observed kmers' % (file_prefix,len(nz),H.sum()))

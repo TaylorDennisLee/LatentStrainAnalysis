@@ -9,11 +9,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hr:i:o:',["filerank=","inputdir=","outputdir="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h','--help'):
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt in ('-r','--filerank'):
             fr = int(arg) - 1
