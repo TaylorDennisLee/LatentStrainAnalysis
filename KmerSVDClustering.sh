@@ -18,12 +18,12 @@ export clustThresh=$3
 
 # KmerLSI
 echo $(date) Starting streaming SVD of conditioned k-mer abundance matrix
-python2 LSA/kmer_lsi.py -i hashed_reads/ -o cluster_vectors/ -s > Logs/KmerLSI.log 2>&1
+python3 LSA/kmer_lsi.py -i hashed_reads/ -o cluster_vectors/ -s > Logs/KmerLSI.log 2>&1
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerLSI.log; exit 1; fi
 
 # KmerClusterIndex
 echo $(date) Finding eigengenome seeds for clustering using a cosine distance threshold of $clustThresh
-python2 LSA/kmer_cluster_index.py -i hashed_reads/ -o cluster_vectors/ -t $clustThresh > Logs/KmerClusterIndex.log 2>&1
+python3 LSA/kmer_cluster_index.py -i hashed_reads/ -o cluster_vectors/ -t $clustThresh > Logs/KmerClusterIndex.log 2>&1
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerClusterIndex.log; exit 1; fi
 
 # KmerClusterParts
@@ -32,7 +32,7 @@ echo $(date) Starting k-mer clustering
 numClusterTasks=`sed -n 1p hashed_reads/hashParts.txt`
 parallel -j $numThreads --no-notice --halt-on-error 2 \
 'echo $(date) clustering k-mer chunk {}; \
-python2 LSA/kmer_cluster_part.py -r {} -i hashed_reads/ -o cluster_vectors/ -t $clustThresh >> Logs/KmerClusterParts.log 2>&1' \
+python3 LSA/kmer_cluster_part.py -r {} -i hashed_reads/ -o cluster_vectors/ -t $clustThresh >> Logs/KmerClusterParts.log 2>&1' \
 ::: $(seq 1 $numClusterTasks)
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerClusterParts.log; exit 1; fi
 
@@ -41,13 +41,13 @@ if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerClu
 numClusterTasks=`sed -n '1p' cluster_vectors/numClusters.txt`
 parallel -j $numThreads --no-notice --halt-on-error 2 \
 'echo $(date) merging chunks for k-mer cluster {}; \
-python2 LSA/kmer_cluster_merge.py -r {} -i cluster_vectors/ -o cluster_vectors/ >> Logs/KmerClusterMerge.log 2>&1' \
+python3 LSA/kmer_cluster_merge.py -r {} -i cluster_vectors/ -o cluster_vectors/ >> Logs/KmerClusterMerge.log 2>&1' \
 ::: $(seq 1 $numClusterTasks)
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerClusterMerge.log; exit 1; fi
 
 # KmerClusterCols
 echo $(date) Arranging k-mer clusters on disk
-python2 LSA/kmer_cluster_cols.py -i hashed_reads/ -o cluster_vectors/ > Logs/KmerClusterCols.log 2>&1
+python3 LSA/kmer_cluster_cols.py -i hashed_reads/ -o cluster_vectors/ > Logs/KmerClusterCols.log 2>&1
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/KmerClusterCols.log; exit 1; fi
 
 echo $(date) Kmer clustering is complete

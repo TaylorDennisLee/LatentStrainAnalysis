@@ -17,7 +17,7 @@ mkdir tmp
 numInputFiles=$(ls -l hashed_reads/*.hashq.* | grep ^- | wc -l)
 parallel -j $numThreads --no-notice --halt-on-error 2 \
 'echo $(date) partitioning reads in hashed input file {}; \
-python2 LSA/write_partition_parts.py -r {} -i hashed_reads/ -o cluster_vectors/ -t tmp/ >> Logs/ReadPartitions.log 2>&1; \
+python3 LSA/write_partition_parts.py -r {} -i hashed_reads/ -o cluster_vectors/ -t tmp/ >> Logs/ReadPartitions.log 2>&1; \
 if [ $? -ne 0 ]; then exit 1; fi' \
 ::: $(seq 1 $numInputFiles)
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/ReadPartitions.log; exit 1; fi
@@ -28,7 +28,7 @@ mkdir read_partitions
 numClusterTasks=`sed -n '1p' cluster_vectors/numClusters.txt`
 parallel -j $numThreads --no-notice --halt-on-error 2 \
 'echo $(date) merging partitions parts for cluster {}; \
-python2 LSA/merge_partition_parts.py -r {} -i cluster_vectors/ -o read_partitions/ >> Logs/MergeIntermediatePartitions.log 2>&1; \
+python3 LSA/merge_partition_parts.py -r {} -i cluster_vectors/ -o read_partitions/ >> Logs/MergeIntermediatePartitions.log 2>&1; \
 if [ $? -ne 0 ]; then exit 1; fi' \
 ::: $(seq 1 $numClusterTasks)
 if [ $? -ne 0 ]; then echo "printing end of last log file..."; tail Logs/MergeIntermediatePartitions.log; exit 1; fi
