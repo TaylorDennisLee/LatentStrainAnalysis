@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ### THIS MAY OCCUPY ~10-50GB OF /tmp SPACE PER JOB
 
@@ -181,4 +181,3 @@ if __name__ == "__main__":
         os.system('rm -rf '+tmpdir)
         print 'total reads written:',reads_written
         print 'unique reads written:',unique_reads_written
-        
