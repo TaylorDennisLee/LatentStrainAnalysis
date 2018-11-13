@@ -11,11 +11,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hr:i:o:t:',["filerank=","inputdir=","outputdir=","thresh="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h','--help'):
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt in ('-i','--inputdir'):
             inputdir = arg
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     hashobject.cluster_thresh = thresh
     Index = hashobject.lsi_cluster_index(lsi)
     np.save(hashobject.output_path+'cluster_index.npy',Index)
-    print 'cluster index has shape:',Index.shape
+    print('cluster index has shape:',Index.shape)
     f = open(hashobject.output_path+'numClusters.txt','w')
     f.write('%d\n' % Index.shape[0])
     f.close()

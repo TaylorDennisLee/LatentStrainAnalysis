@@ -1,5 +1,5 @@
 import numpy as np
-import cPickle
+import pickle
 from operator import itemgetter
 from LSA import LSA
 
@@ -29,19 +29,20 @@ class Hyper_Sequences(LSA):
     def set_wheels(self,wheels=200):
         random_kmer_path = self.input_path + 'random_kmers.fastq'
         Wheels = []
-        for w in xrange(wheels):
+        for w in range(wheels):
             Wheels += self.one_wheel(w,random_kmer_path)
         Wheels.sort()
-        f = open(self.output_path+'Wheels.txt','w')
-        cPickle.dump(Wheels,f)
+        print(Wheels)
+        f = open(self.output_path+'Wheels.txt','wb')
+        pickle.dump(Wheels,f)
         f.close()
 
     def get_wheels(self,spoke_limit=999,wheel_limit=999999):
         try:
-            f = open(self.output_path+'Wheels.txt')
+            f = open(self.output_path+'Wheels.txt', 'rb')
         except:
-            f = open(self.input_path+'Wheels.txt')
-        Wheels = cPickle.load(f)
+            f = open(self.input_path+'Wheels.txt', 'rb')
+        Wheels = pickle.load(f)
         f.close()
         self.Wheels = [{'w': x[0],'s': x[1],'p': x[2],'c': x[3]} for x in Wheels if (x[0] < wheel_limit) and (x[1] < spoke_limit)]
 
@@ -82,7 +83,7 @@ class Hyper_Sequences(LSA):
         f = open(rp)
         for s in range(self.hash_size):
             L = self.pick_leaf_noloc(self.kmer_size,f)
-            P = self.affine_hull(L.values())
+            P = self.affine_hull(list(L.values()))
             C = P.pop()
             S.append((w,s,P,C))
         f.close()

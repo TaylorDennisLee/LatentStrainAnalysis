@@ -9,11 +9,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hr:i:o:',["filerank=","inputdir=","outputdir="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h','--help'):
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt in ('-i','--inputdir'):
             inputdir = arg
@@ -36,4 +36,4 @@ if __name__ == "__main__":
         np.save(outputdir+str(fr)+'.cluster.npy',C[:ci])
         os.system('rm -r %s%d/' % (outputdir,fr))
     else:
-        print 'NO FILES:',fr
+        print('NO FILES:',fr)

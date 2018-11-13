@@ -8,11 +8,11 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:],'hi:o:k:s:',["inputdir=","outputdir=","kmersize=","hashsize="])
     except:
-        print help_message
+        print(help_message)
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h','--help'):
-            print help_message
+            print(help_message)
             sys.exit()
         elif opt in ('-i','--inputdir'):
             inputdir = arg
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     total_rand_kmers = k_size*h_size*2
     hashobject.rand_kmers_for_wheel(total_rand_kmers)
     hashobject.set_wheels(wheels=1)
-    os.system('rm %s/random_kmers.fastq' % inputdir)
+    # os.system('rm %s/random_kmers.fastq' % inputdir)
     f = open(outputdir + 'hashParts.txt','w')
     f.write('%d\n' % (2**h_size/10**6 + 1))
     f.close()

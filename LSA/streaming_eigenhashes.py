@@ -90,7 +90,7 @@ class StreamingEigenhashes(Hash_Counting,Hyper_Sequences,LSA):
             seed_vectors = lsi[self.kmer_corpus_from_disk(o=(np.random.randint(0,2**self.hash_size-chunk_size),chunk_size))]
             Clusters,Index = self.merge_index(seed_vectors,Index,Clusters)
             Clusters,Index = self.collapse_index(Index,Clusters)
-            print ci,len(Clusters)
+            print(ci,len(Clusters))
         return Index
 
     def lsi_cluster_part(self,offsets,lsi,Index):
